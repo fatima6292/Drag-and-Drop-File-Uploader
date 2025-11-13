@@ -1,0 +1,137 @@
+/* ===== Body & Typography ===== */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding-top: 50px;
+}
+
+/* ===== Heading ===== */
+h2 {
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 28px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+/* ===== icon ========== */
+#uploadIcon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+  opacity: 0.7;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#dropArea.highlight #uploadIcon {
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+/* ===== Drop Area ===== */
+#dropArea {
+  width: 400px;
+  height: 220px;
+  border: 3px dashed #90caf9;
+  border-radius: 15px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: 0.4s ease;
+  cursor: pointer;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+#dropArea p {
+  color: #616161;
+  font-size: 16px;
+}
+
+#dropArea.highlight {
+  border-color: #42a5f5;
+  background-color: #e3f2fd;
+  box-shadow: 0 12px 25px rgba(66, 165, 245, 0.2);
+}
+
+/* ===== File Input ===== */
+#fileInput {
+  margin-top: 15px;
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: 1px solid #90caf9;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-size: 14px;
+}
+
+#fileInput:hover {
+  background-color: #42a5f5;
+  color: #fff;
+  border-color: #42a5f5;
+}
+
+/* ===== Progress Bar ===== */
+#progressContainer {
+  width: 400px;
+  height: 25px;
+  background-color: #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 25px;
+  display: none;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#progressBar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #42a5f5, #1e88e5);
+  transition: width 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* ===== Preview Area ===== */
+#previewArea {
+  margin-top: 25px;
+  width: 400px;
+  text-align: center;
+}
+
+#previewArea img {
+  max-width: 100%;
+  border-radius: 15px;
+  margin-top: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+#previewArea img:hover {
+  transform: scale(1.05);
+}
+
+/* ===== Error Message ===== */
+#errorMsg {
+  color: #e53935;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 450px) {
+  #dropArea, #progressContainer, #previewArea {
+    width: 90%;
+  }
+}
