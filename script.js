@@ -1,6 +1,7 @@
 // Get elements
 const dropArea = document.getElementById("dropArea");
 const fileInput = document.getElementById("fileInput");
+const uploadIcon = document.getElementById("uploadIcon");
 const previewArea = document.getElementById("previewArea");
 const errorMsg = document.getElementById("errorMsg");
 const progressContainer = document.getElementById("progressContainer");
@@ -9,7 +10,8 @@ const progressBar = document.getElementById("progressBar");
 // Show saved image on page load
 window.addEventListener("load", () => {
   const savedImage = localStorage.getItem("uploadedImage");
-  if (savedImage) showPreview(savedImage, false);
+  if (savedImage) 
+    showPreview(savedImage, false);
 });
 
 // Prevent default drag behaviors
@@ -20,18 +22,23 @@ window.addEventListener("load", () => {
   });
 });
 
-// Highlight drop area on drag
+// Drag-over highlight
 ["dragenter", "dragover"].forEach(event => {
-  dropArea.addEventListener(event, () => dropArea.classList.add("highlight"));
+  dropArea.addEventListener(event, () => dropArea.classList.add("highlight-drag"));
 });
 ["dragleave", "drop"].forEach(event => {
-  dropArea.addEventListener(event, () => dropArea.classList.remove("highlight"));
+  dropArea.addEventListener(event, () => dropArea.classList.remove("highlight-drag"));
 });
+
+// Hover highlight
+dropArea.addEventListener("mouseenter", () => dropArea.classList.add("highlight-hover"));
+dropArea.addEventListener("mouseleave", () => dropArea.classList.remove("highlight-hover"));
 
 // Handle drop
 dropArea.addEventListener("drop", e => {
   const file = e.dataTransfer.files[0];
-  if (file) handleFile(file);
+  if (file) 
+    handleFile(file);
 });
 
 // Handle manual file input
@@ -43,9 +50,8 @@ fileInput.addEventListener("change", e => {
   fileInput.value = "";
 });
 
-uploadIcon.addEventListener("click", () => {
-  fileInput.click();
-});
+// Icon click opens file chooser
+uploadIcon.addEventListener("click", () => fileInput.click());
 
 // Main file handler
 function handleFile(file) {
@@ -58,11 +64,11 @@ function handleFile(file) {
     return;
   }
 
-  // Show fake progress then upload
+  // Fake progress then upload
   simulateUpload(() => uploadFile(file));
 }
 
-// Upload: convert to Base64 and store in localStorage
+// Upload file (convert to Base64 & store)
 function uploadFile(file) {
   const reader = new FileReader();
   reader.onload = function(e) {
@@ -73,7 +79,7 @@ function uploadFile(file) {
   reader.readAsDataURL(file);
 }
 
-// Simulate upload progress
+// Fake upload progress
 function simulateUpload(callback) {
   progressContainer.style.display = "block";
   progressBar.style.width = "0%";
@@ -97,7 +103,7 @@ function simulateUpload(callback) {
   }, 200);
 }
 
-// Show image preview
+// Show Preview
 function showPreview(input, isFile = true) {
   if (isFile) {
     const reader = new FileReader();

@@ -1,13 +1,15 @@
 /* ===== Body & Typography ===== */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
+  background: linear-gradient(135deg, #c3e3e1, #abece7); /* soft teal gradient */
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0;
   padding-top: 50px;
+  min-height: 100vh;
 }
+
 
 /* ===== Heading ===== */
 h2 {
@@ -16,23 +18,10 @@ h2 {
   font-size: 28px;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
-/* ===== icon ========== */
-#uploadIcon {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 15px;
-  opacity: 0.7;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-#dropArea.highlight #uploadIcon {
-  transform: scale(1.2);
-  opacity: 1;
-}
 
 /* ===== Drop Area ===== */
 #dropArea {
-  width: 400px;
+  width: 350px;
   height: 220px;
   border: 3px dashed #90caf9;
   border-radius: 15px;
@@ -41,7 +30,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: 0.4s ease;
+  transition: 0.4s ease, transform 0.3s;
   cursor: pointer;
   text-align: center;
   padding: 20px;
@@ -51,12 +40,35 @@ h2 {
 #dropArea p {
   color: #616161;
   font-size: 16px;
+  transition: color 0.3s ease;
 }
 
-#dropArea.highlight {
+/* Icon */
+#uploadIcon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+  opacity: 0.7;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Drag-over highlight */
+#dropArea.highlight-drag {
   border-color: #42a5f5;
   background-color: #e3f2fd;
   box-shadow: 0 12px 25px rgba(66, 165, 245, 0.2);
+}
+
+/* Hover highlight */
+#dropArea.highlight-hover {
+  border-color: #1e88e5;
+  background-color: #bbdefb;
+  box-shadow: 0 8px 20px rgba(30, 136, 229, 0.3);
+  transform: scale(1.02);
+}
+
+#dropArea.highlight-hover p {
+  color: #1e88e5;
 }
 
 /* ===== File Input ===== */
@@ -78,7 +90,7 @@ h2 {
 
 /* ===== Progress Bar ===== */
 #progressContainer {
-  width: 400px;
+  width: 350px;
   height: 25px;
   background-color: #e0e0e0;
   border-radius: 12px;
@@ -104,21 +116,54 @@ h2 {
 /* ===== Preview Area ===== */
 #previewArea {
   margin-top: 25px;
-  width: 400px;
+  width: 90%;
+  max-width: 380px;
+  min-height: 180px;
+  border-radius: 20px;
+  border: 2px dashed #90caf9; /* dashed border */
+  background: linear-gradient(145deg, #e3f2fd, #e8f5e9); /* default pastel */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #607d8b;
+  font-size: 16px;
+  font-weight: 500;
   text-align: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease, border 0.3s ease;
+  padding: 15px;
 }
 
+/* Hover effect: subtle lift + color change + border highlight */
+#previewArea:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+  border-color: #42a5f5;
+  background: linear-gradient(145deg, #bbdefb, #c8e6c9); /* hover gradient */
+}
+
+/* Image inside preview */
 #previewArea img {
   max-width: 100%;
+  max-height: 250px;
   border-radius: 15px;
-  margin-top: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Slight zoom on image hover */
 #previewArea img:hover {
   transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
+
+
+/* Slight zoom on image hover */
+#previewArea img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+
 
 /* ===== Error Message ===== */
 #errorMsg {
