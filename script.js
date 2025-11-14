@@ -12,7 +12,7 @@ window.addEventListener("load", () => {
   if (savedImage) showPreview(savedImage, false);
 });
 
-// Prevent default behavior for drag & drop
+// Prevent default drag behaviors
 ["dragenter", "dragover", "dragleave", "drop"].forEach(event => {
   dropArea.addEventListener(event, e => {
     e.preventDefault();
@@ -20,7 +20,7 @@ window.addEventListener("load", () => {
   });
 });
 
-// Highlight drop area
+// Highlight drop area on drag
 ["dragenter", "dragover"].forEach(event => {
   dropArea.addEventListener(event, () => dropArea.classList.add("highlight"));
 });
@@ -28,42 +28,44 @@ window.addEventListener("load", () => {
   dropArea.addEventListener(event, () => dropArea.classList.remove("highlight"));
 });
 
-// Handle drop file
+// Handle drop
 dropArea.addEventListener("drop", e => {
-  const file = e.dataTransfer.files[0]; // get droped file
-  if (file) 
-    handleFile(file);
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
 });
 
 // Handle manual file input
 fileInput.addEventListener("change", e => {
-  const file = e.target.files[0]; // get manual file
-  if (file) 
-    handleFile(file);
+  const file = e.target.files[0];
+  if (file) handleFile(file);
+
+  // Reset input to allow same file selection again
+  fileInput.value = "";
 });
 
-// Click drop area to open file input
-dropArea.addEventListener("click", () => fileInput.click());
+uploadIcon.addEventListener("click", () => {
+  fileInput.click();
+});
 
-// Main function to handle file
+// Main file handler
 function handleFile(file) {
   errorMsg.textContent = "";
   previewArea.innerHTML = "";
 
   const validTypes = ["image/jpeg", "image/png", "image/gif"];
   if (!validTypes.includes(file.type)) {
-    errorMsg.textContent = "Invalid file type! Please upload an image (JPG, PNG, GIF).";
+    errorMsg.textContent = "Invalid file type! Please upload JPG, PNG or GIF.";
     return;
   }
 
-  // Show fake upload progress
+  // Show fake progress then upload
   simulateUpload(() => uploadFile(file));
 }
 
-// Upload file in local storage
+// Upload: convert to Base64 and store in localStorage
 function uploadFile(file) {
-  const reader = new FileReader(); // browser api-->use to read temporary browser stored file
-  reader.onload = function(e) {// onload trigger when ile eading complete
+  const reader = new FileReader();
+  reader.onload = function(e) {
     const dataURL = e.target.result;
     localStorage.setItem("uploadedImage", dataURL);
     showPreview(dataURL, false);
@@ -85,25 +87,21 @@ function simulateUpload(callback) {
     progressBar.style.width = progress + "%";
     progressBar.innerText = progress + "%";
 
-    if (progress >= 100) 
-    {
+    if (progress >= 100) {
       clearInterval(interval);
       setTimeout(() => {
         progressContainer.style.display = "none";
-
         callback();
       }, 400);
     }
   }, 200);
 }
 
-// Show preview function
+// Show image preview
 function showPreview(input, isFile = true) {
   if (isFile) {
     const reader = new FileReader();
-    reader.onload = function(e) {
-      showPreview(e.target.result, false);
-    };
+    reader.onload = e => showPreview(e.target.result, false);
     reader.readAsDataURL(input);
   } else {
     previewArea.innerHTML = "";
