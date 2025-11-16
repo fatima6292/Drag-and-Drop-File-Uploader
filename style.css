@@ -1,182 +1,466 @@
-/* ===== Body & Typography ===== */
+/* ---------- GLOBAL ---------- */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #c3e3e1, #abece7); /* soft teal gradient */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #040c00;  
   margin: 0;
   padding-top: 50px;
-  min-height: 100vh;
-}
-
-
-/* ===== Heading ===== */
-h2 {
-  color: #2c3e50;
-  margin-bottom: 30px;
-  font-size: 28px;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-}
-
-/* ===== Drop Area ===== */
-#dropArea {
-  width: 350px;
-  height: 220px;
-  border: 3px dashed #90caf9;
-  border-radius: 15px;
-  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
+  perspective: 1200px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+#particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+h2 {
+  font-size: 32px;
+  color: #e8e8ed;
+  margin-bottom: 25px;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  animation: fadeDown 1s ease forwards;
+}
+
+/* ---------- DROP AREA ---------- */
+#dropArea {
+  width: 380px;
+  height: 250px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  transition: 0.4s ease, transform 0.3s;
+  align-items: center;
+  transition: transform 0.7s cubic-bezier(.03,.98,.52,.99),
+              box-shadow 0.5s, border-color 0.5s, background 0.5s;
   cursor: pointer;
   text-align: center;
-  padding: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  animation: float 4s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+  border: 2px dashed rgba(255,255,255,0.5);
+}
+
+/* Neon Glow Border */
+#dropArea::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  padding: 2px;
+  background: linear-gradient(130deg, #00f2ff, #b400ff, #0099ff);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.55;
+  transition: 0.6s ease;
+}
+
+#dropArea:hover::before {
+  opacity: 1;
+}
+
+#dropArea:hover {
+  transform: scale(1.05) rotateX(10deg) rotateY(-10deg);
+  box-shadow: 0 22px 45px rgba(0,0,0,0.25);
+  border-color: #4a90ff;
+  background: rgba(255,255,255,0.25);
+}
+
+#uploadIcon {
+  width: 60px;
+  opacity: 0.75;
+  transition: 0.5s ease;
+}
+
+#dropArea:hover #uploadIcon {
+  transform: scale(1.15) rotateZ(12deg);
 }
 
 #dropArea p {
-  color: #616161;
   font-size: 16px;
-  transition: color 0.3s ease;
+  color: #fff;
+  margin-top: 12px;
+  transition: 0.4s;
 }
 
-/* Icon */
-#uploadIcon {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 15px;
-  opacity: 0.7;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+#dropArea:hover p {
+  color: #00f2ff;
 }
 
-/* Drag-over highlight */
-#dropArea.highlight-drag {
-  border-color: #42a5f5;
-  background-color: #e3f2fd;
-  box-shadow: 0 12px 25px rgba(66, 165, 245, 0.2);
-}
-
-/* Hover highlight */
-#dropArea.highlight-hover {
-  border-color: #1e88e5;
-  background-color: #bbdefb;
-  box-shadow: 0 8px 20px rgba(30, 136, 229, 0.3);
-  transform: scale(1.02);
-}
-
-#dropArea.highlight-hover p {
-  color: #1e88e5;
-}
-
-/* ===== File Input ===== */
+/* ---------- FILE INPUT ---------- */
 #fileInput {
-  margin-top: 15px;
-  padding: 6px 12px;
-  border-radius: 5px;
-  border: 1px solid #90caf9;
+  margin-top: 18px;
+  padding: 8px 15px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.3);
+  border: 1px solid #7db0ff;
+  backdrop-filter: blur(8px);
   cursor: pointer;
-  transition: 0.3s ease;
   font-size: 14px;
+  transition: 0.3s ease;
 }
 
 #fileInput:hover {
-  background-color: #42a5f5;
-  color: #fff;
-  border-color: #42a5f5;
+  background: rgba(0, 153, 255,0.6);
+  border-color: #00f2ff;
+  color: white;
+  transform: translateY(-3px);
 }
 
-/* ===== Progress Bar ===== */
+/* ---------- PROGRESS BAR ---------- */
 #progressContainer {
-  width: 350px;
-  height: 25px;
-  background-color: #e0e0e0;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-top: 25px;
+  width: 360px;
+  height: 26px;
+  background: rgba(255,255,255,0.35);
+  border-radius: 14px;
+  margin-top: 5px;
   display: none;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
 }
 
 #progressBar {
-  width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, #42a5f5, #1e88e5);
-  transition: width 0.4s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 0%;
+  background: linear-gradient(90deg, #5d9dff, #b36bff);
   color: white;
-  font-weight: bold;
   font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: width 0.4s ease;
 }
-
-/* ===== Preview Area ===== */
+/*----------- Preview Area------------------ */
 #previewArea {
-  margin-top: 25px;
-  width: 90%;
-  max-width: 380px;
-  min-height: 180px;
-  border-radius: 20px;
-  border: 2px dashed #90caf9; /* dashed border */
-  background: linear-gradient(145deg, #e3f2fd, #e8f5e9); /* default pastel */
+  position: relative;
+  margin-top: 15px;
+  width: 600px;         /* fixed width */
+  height: 200px;        /* fixed height */
+  border-radius: 22px;
+  border: 2px dashed #9fbdeb;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: #607d8b;
-  font-size: 16px;
-  font-weight: 500;
-  text-align: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease, border 0.3s ease;
+  justify-content: flex-start;
+  flex-wrap: nowrap;    /* horizontal line only */
   padding: 15px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+  overflow-x: auto;     /* horizontal scroll */
+  overflow-y: hidden;   /* hide vertical scroll */
+  scrollbar-width: thin;
 }
 
-/* Hover effect: subtle lift + color change + border highlight */
+#previewArea::-webkit-scrollbar {
+  height: 6px;
+}
+
+#previewArea::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.3);
+  border-radius: 3px;
+}
+
+#previewArea p {
+  color: #fff;
+}
+
 #previewArea:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-  border-color: #42a5f5;
-  background: linear-gradient(145deg, #bbdefb, #c8e6c9); /* hover gradient */
+  border-color: #00d0ff;
+  box-shadow: 0 0 25px rgba(0, 208, 255, 0.4);
+  transition: 0.4s ease;
 }
 
-/* Image inside preview */
-#previewArea img {
-  max-width: 100%;
-  max-height: 250px;
-  border-radius: 15px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* ---------- Preview Box ---------- */
+
+/* stacked images */
+.preview-box {
+  position: absolute;
+  width: 150px;
+  height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* Slight zoom on image hover */
-#previewArea img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+/* normal stacked images */
+.preview-box:not(.active) {
+  transform: translate(var(--x,0), var(--y,0)) scale(1);
+  z-index: var(--i);
 }
 
-
-/* Slight zoom on image hover */
-#previewArea img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+/* clicked image expands inside preview area */
+.preview-box.active {
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  transform: translate(0,0) scale(1.05);
+  z-index: 999;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
 }
 
+/* PREVIEW BOX HOVER ROTATION */
+.preview-box:not(.active):hover {
+  transform: translate(var(--x,0), var(--y,0)) rotateY(12deg) rotateX(6deg) scale(1.03);
+  transition: transform 0.35s ease;
+}
 
+/* ---------- Preview Image---------*/
 
-/* ===== Error Message ===== */
+.preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  pointer-events: auto ;
+  transition: transform 0.5s ease, box-shadow 0.4s ease;
+}
+
+/* IMAGE HOVER  */
+.preview-box:not(.active):hover img {
+  transform: scale(1.07);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* ---------- ACTIVE IMAGE ---------- */
+.preview-box.active img {
+  transform: scale(1) rotate(0deg); /* click-to-center ke liye JS control karega */
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+
+/* Remove button */
+.remove-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255, 255, 255, 0.7);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, background 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+/* Show remove button on hover */
+.preview-box:hover .remove-btn {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.remove-btn:hover {
+  background: rgba(13, 0, 0, 0.9);
+  transform: scale(1.2);
+}
+
+.remove-btn img {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+/* ---------- ERROR ---------- */
 #errorMsg {
-  color: #e53935;
-  margin-top: 20px;
+  color: #d32f2f;
+  margin-top: 15px;
   font-weight: bold;
-  font-size: 15px;
-  text-align: center;
+  font-size: 16px;
+  animation: fadeDown 0.8s ease forwards;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 450px) {
-  #dropArea, #progressContainer, #previewArea {
+
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes float { 0%{transform:translateY(0px);} 50%{transform:translateY(-10px);} 100%{transform:translateY(0px);} }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-25px);} to {opacity:1; transform: translateY(0);} }
+
+/* ----------------------------------------------------
+   RESPONSIVE FIX — FULLY ADAPTIVE PREVIEW AREA & CARDS
+----------------------------------------------------- */
+
+/* Large Tablets (max-width: 992px) */
+@media (max-width: 992px) {
+  #previewArea {
     width: 90%;
+    height: 180px;
+    padding: 12px;
+  }
+
+  .preview-box {
+    width: 130px;
+    height: 160px;
+  }
+ 
+  #progressContainer {
+    width: 85%;
+    height: 24px;
+}
+
+}
+
+/* Tablets / Landscape Phones (max-width: 768px) */
+@media (max-width: 768px) {
+  #dropArea {
+    width: 90%;
+    height: 220px;
+  }
+
+  #previewArea {
+    width: 95%;
+    height: 170px;
+    padding: 10px;
+  }
+
+  .preview-box {
+    width: 120px;
+    height: 150px;
+  }
+
+  h2 {
+    margin-left: 10px;
+    font-size: 28px;
+  }
+  
+  #progressContainer {
+    width: 90%;
+    height: 22px;
   }
 }
+
+/* Mobile Phones (max-width: 600px) */
+@media (max-width: 600px) {
+  #previewArea {
+    width: 90%;
+    height: 160px;
+    padding: 8px;
+    border-radius: 16px;
+  }
+
+  .preview-box {
+    width: 100px;
+    height: 155px;
+  }
+
+  .preview-box.active {
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+  }
+
+  #dropArea {
+    width: 50%;
+    height: 200px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  #fileInput {
+    width: 170px;
+    height: 15px;
+    font-size: 10px;
+  }
+  #progressContainer {
+    width: 92%;
+    height: 20px;
+  }
+  #progressBar {
+    font-size: 12px;
+  }
+
+}
+
+/* Small Phones (max-width: 450px) */
+@media (max-width: 450px) {
+  #previewArea {
+    width: 98%;
+    height: 150px;
+    padding: 6px;
+  }
+
+  .preview-box {
+    width: 85px;
+    height: 110px;
+  }
+
+  .preview-box.active {
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+  }
+
+  #dropArea {
+    width: 95%;
+    height: 180px;
+  }
+
+  #uploadIcon {
+    width: 50px;
+  }
+
+  #dropArea p {
+    font-size: 14px;
+  }
+
+  #fileInput {
+    width: 150px;
+    height: 38px;
+    font-size: 10px;
+  }
+
+  #progressContainer {
+    width: 95%;
+    height: 18px;
+  }
+  #progressBar {
+    font-size: 11px;
+  }
+}
+
+/* Extra Small Phones (max-width: 360px) */
+@media (max-width: 400px) {
+  
+  .preview-box {
+    width: 120px;
+    height: 140px;
+  }
+  #previewArea {
+    height: 150px;
+    width: 90%;
+  }
+   #fileInput {
+    width: 160px;
+    height: 20px;
+    font-size: 10px;
+  }
+  #dropArea {
+    width: 90%;
+    height: 180px;
+  }
+  #progressContainer {
+    width: 96%;
+    height: 16px;
+  }
+  #progressBar {
+    font-size: 10px;
+  }
+}
+
