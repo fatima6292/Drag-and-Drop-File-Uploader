@@ -142,8 +142,8 @@ function showPreview(input, isFile = true) // isFile -> file obj ha ya base64 ml
     delBtn.classList.add("remove-btn");
     const icon = document.createElement("img");
     icon.src = "icons/delete.png";
-    icon.style.width = "20px";
-    icon.style.height = "20px";
+    icon.style.width = "15px";
+    icon.style.height = "15px";
     icon.style.pointerEvents = "none";
     delBtn.appendChild(icon);
     delBtn.onclick = () => deleteImage(input, container);
