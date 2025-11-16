@@ -115,7 +115,6 @@ function simulateUpload(callback){
 }
 
 // Show Preview
-// Show Preview
 function showPreview(input, isFile = true) // isFile -> file obj ha ya base64 mla
 {
   // In case drag drop (file obj --> need to convert into base64 so we read file )
@@ -138,17 +137,24 @@ function showPreview(input, isFile = true) // isFile -> file obj ha ya base64 ml
     img.src = input;
     container.appendChild(img);
 
-    const delBtn = document.createElement("button");
+   const delBtn = document.createElement("button");
     delBtn.classList.add("remove-btn");
+
     const icon = document.createElement("img");
     icon.src = "icons/delete.png";
     icon.style.width = "15px";
     icon.style.height = "15px";
     icon.style.pointerEvents = "none";
-    delBtn.appendChild(icon);
-    delBtn.onclick = () => deleteImage(input, container);
+    delBtn.appendChild(icon);    
 
-    container.appendChild(delBtn);
+    // STOP PROPAGATION → container click will NOT trigger
+    delBtn.addEventListener("click", (e) => {
+    e.stopPropagation();     // prevent expand/collapse click
+  deleteImage(input, container);
+});
+
+container.appendChild(delBtn);
+
     previewArea.appendChild(container);
 
     // small delay to trigger CSS transition
@@ -234,36 +240,48 @@ function updateStack() {
     }
   });
 }
-
-function updateStack(){
+// update stack
+function updateStack() {
   const boxes = previewArea.querySelectorAll(".preview-box");
-  boxes.forEach((box,i) => {
-    if(!box.classList.contains("active")){
-      box.style.transform = `translateX(${i * 30}px)`; // horizontal overlap
+  boxes.forEach((box, i) => {
+    if (!box.classList.contains("active")) {
+      box.style.transform = `translateX(${i * 30}px)`; 
       box.style.zIndex = i;
+      box.style.top = "";
+      box.style.left = "";
     }
   });
 }
 
-// Delete image
-function deleteImage(src, container){
+
+// Delete Image
+function deleteImage(src, container) {
   container.remove();
+
+  // Update localStorage
   let images = JSON.parse(localStorage.getItem("uploadedImages")) || [];
   images = images.filter(img => img !== src);
   localStorage.setItem("uploadedImages", JSON.stringify(images));
-  
-  const boxes = previewArea.querySelectorAll(".preview-box");
-  boxes.forEach((box, i) => {
-    box.style.setProperty("--i", i);       // reset CSS variable for stacking
-    box.style.transform = `translate(${i*20}px, ${-i*10}px) scale(1)`; // reset transform
-    box.style.zIndex = i;                  // reset z-index
-    box.classList.remove("active");        // remove any active class
-  });
 
-  if(boxes.length === 0){
+  // Get remaining boxes
+  const boxes = previewArea.querySelectorAll(".preview-box");
+
+  if (boxes.length === 0) {
     previewArea.innerHTML = "<p>No images uploaded yet</p>";
+  } else {
+    // Reset all boxes
+    boxes.forEach((box, i) => {
+      box.classList.remove("active");
+      box.style.top = "";
+      box.style.left = "";
+      box.style.width = box.dataset.origWidth + "px";
+      box.style.height = box.dataset.origHeight + "px";
+      box.style.transform = `translateX(${i * 30}px)`; // tight stack
+      box.style.zIndex = i;
+    });
   }
 }
+
 
 // Toggle active card
 function toggleActive(box){
