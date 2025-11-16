@@ -115,97 +115,125 @@ function simulateUpload(callback){
 }
 
 // Show Preview
-function showPreview(input,isFile=true){
-  if(isFile){
-    const reader=new FileReader();
-    reader.onload=e=>showPreview(e.target.result,false);
+// Show Preview
+function showPreview(input, isFile = true) // isFile -> file obj ha ya base64 mla
+{
+  // In case drag drop (file obj --> need to convert into base64 so we read file )
+  if (isFile) {
+    const reader = new FileReader();
+    reader.onload = e => showPreview(e.target.result, false);
     reader.readAsDataURL(input);
-  } else {
+  }
+   // in case of file uploaded from local storage aleady in base
+   else {
     const p = previewArea.querySelector("p");
-    if(p) p.remove();
+    if (p) p.remove();
 
-    const container=document.createElement("div");
+    const container = document.createElement("div");
     container.classList.add("preview-box");
-    container.style.opacity = 0;          // start invisible
+    container.style.opacity = 0;          
     container.style.transform = "scale(0.6)";
 
-    const img=document.createElement("img");
-    img.src=input;
+    const img = document.createElement("img");
+    img.src = input;
     container.appendChild(img);
 
-    const delBtn=document.createElement("button");
+    const delBtn = document.createElement("button");
     delBtn.classList.add("remove-btn");
-    const icon=document.createElement("img");
-    icon.src="icons/delete.png";
-    icon.style.width="20px";
-    icon.style.height="20px";
-    icon.style.pointerEvents="none";
+    const icon = document.createElement("img");
+    icon.src = "icons/delete.png";
+    icon.style.width = "20px";
+    icon.style.height = "20px";
+    icon.style.pointerEvents = "none";
     delBtn.appendChild(icon);
-    delBtn.onclick=()=>deleteImage(input,container);
+    delBtn.onclick = () => deleteImage(input, container);
 
     container.appendChild(delBtn);
     previewArea.appendChild(container);
 
     // small delay to trigger CSS transition
-    setTimeout(()=>{
+    setTimeout(() => {
       container.style.opacity = 1;
       container.style.transform = "scale(1)";
       updateStack();  // position all images
     }, 50);
 
-// store original dimensions and transform
-container.addEventListener("click", e => {
-  const isActive = container.classList.contains("active");
-  const boxes = previewArea.querySelectorAll(".preview-box");
+    // Click handler for expand/collapse
+    container.addEventListener("click", e => {
+      const isActive = container.classList.contains("active");
+      const boxes = previewArea.querySelectorAll(".preview-box");
 
-  if (!isActive) {
-    // EXPAND clicked image
-    boxes.forEach((b, i) => {
-      // store original state if not stored
-      if (!b.dataset.origWidth) {
-        b.dataset.origWidth = b.offsetWidth;
-        b.dataset.origHeight = b.offsetHeight;
-        b.dataset.origTransform = b.style.transform || "";
-        b.dataset.origZ = b.style.zIndex || 0;
-      }
+      // if clicked image is not expanded yet
+      if (!isActive) {
 
-      if (b !== container) {
-        // shrink other images slightly
-        b.style.width = "150px";
-        b.style.height = "150px";
-        b.style.transform = `translateX(${i * 10}px)`; 
-        b.style.zIndex = i;
-      } else {
-        // center clicked image
-        const previewWidth = previewArea.clientWidth;
-        const previewHeight = previewArea.clientHeight;
-        const expandedWidth = 300;
-        const expandedHeight = 230;
-        const centerX = (previewWidth - expandedWidth) / 2;
-        const centerY = (previewHeight - expandedHeight) / 2;
+        // To EXPAND clicked image:
+        boxes.forEach((box, index) => {
+          // store original state of ith peview-box if not stored
+          if (!box.dataset.origWidth) {
+            box.dataset.origWidth = box.offsetWidth;
+            box.dataset.origHeight = box.offsetHeight;
+            box.dataset.origTransform = box.style.transform || "";
+            box.dataset.origZ = box.style.zIndex || 0;
+            box.dataset.origTop = box.style.top || "";
+            box.dataset.origLeft = box.style.left || "";
+          }
+          // if current preview-box was not clicked
+          if (box !== container) {
+            // shrink other images slightly
+            box.style.width = "150px";
+            box.style.height = "150px";
+            box.style.transform = `translateX(${index * 10}px)`; 
+            box.style.zIndex = index;
+            box.style.top = "";
+            box.style.left = "";
+          } 
+          // if current preview-box is clicked
+          else {
+            // center clicked image
+            const previewWidth = previewArea.clientWidth;
+            const previewHeight = previewArea.clientHeight;
+            const expandedWidth = 300;
+            const expandedHeight = 200;
+            const centerX = (previewWidth - expandedWidth) / 2;
+            const centerY = (previewHeight - expandedHeight) / 2;
 
-        b.classList.add("active");
-        b.style.width = expandedWidth + "px";
-        b.style.height = expandedHeight + "px";
-        b.style.transform = `translate(${centerX}px, ${centerY}px)`;
-        b.style.zIndex = 999;
+            box.classList.add("active");
+            box.style.width = expandedWidth + "px";
+            box.style.height = expandedHeight + "px";
+            box.style.top = centerY + "px";
+            box.style.left = centerX + "px";
+            box.style.transform = "none";
+            box.style.zIndex = 999;
+          }
+        });
+      } 
+      // if clicked image is explaned/ centered
+      else {
+        // COLLAPSE back to original stack
+        container.classList.remove("active");
+        boxes.forEach((box, index) => {
+          box.style.width = box.dataset.origWidth + "px";
+          box.style.height = box.dataset.origHeight + "px";
+          box.style.transform = box.dataset.origTransform;
+          box.style.top = box.dataset.origTop;
+          box.style.left = box.dataset.origLeft;
+          box.style.zIndex = box.dataset.origZ;
+        });
       }
     });
-  } else {
-    // COLLAPSE back to original stack
-    container.classList.remove("active");
-    boxes.forEach((b, i) => {
-      b.style.width = b.dataset.origWidth + "px";
-      b.style.height = b.dataset.origHeight + "px";
-      b.style.transform = b.dataset.origTransform;
-      b.style.zIndex = b.dataset.origZ;
-    });
-  }
-});
-
   }
 }
 
+// Stack update function
+function updateStack() {
+  const boxes = previewArea.querySelectorAll(".preview-box");
+  boxes.forEach((box, i) => {
+    if (!box.classList.contains("active")) {
+      box.style.transform = `translateX(${i * 30}px)`; 
+      box.style.zIndex = i;
+    }
+  });
+}
 
 function updateStack(){
   const boxes = previewArea.querySelectorAll(".preview-box");
