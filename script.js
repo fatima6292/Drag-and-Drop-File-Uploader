@@ -230,16 +230,6 @@ container.appendChild(delBtn);
   }
 }
 
-// Stack update function
-function updateStack() {
-  const boxes = previewArea.querySelectorAll(".preview-box");
-  boxes.forEach((box, i) => {
-    if (!box.classList.contains("active")) {
-      box.style.transform = `translateX(${i * 30}px)`; 
-      box.style.zIndex = i;
-    }
-  });
-}
 // update stack
 function updateStack() {
   const boxes = previewArea.querySelectorAll(".preview-box");
