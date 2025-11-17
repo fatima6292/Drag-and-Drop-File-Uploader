@@ -12,7 +12,7 @@ body {
   position: relative;
   overflow-x: hidden;
 }
-
+/* ------Background---------- */
 #particles {
   position: fixed;
   top: 0;
@@ -143,12 +143,13 @@ h2 {
   align-items: center;
   transition: width 0.4s ease;
 }
+
 /*----------- Preview Area------------------ */
 #previewArea {
   position: relative;
   margin-top: 15px;
-  width: 600px;         /* fixed width */
-  height: 200px;        /* fixed height */
+  width: 600px;         
+  height: 200px;        
   border-radius: 22px;
   border: 2px dashed #9fbdeb;
   background: rgba(255,255,255,0.15);
@@ -156,11 +157,11 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  flex-wrap: nowrap;    /* horizontal line only */
+  flex-wrap: nowrap;    
   padding: 15px;
   box-shadow: 0 8px 22px rgba(0,0,0,0.15);
-  overflow-x: auto;     /* horizontal scroll */
-  overflow-y: hidden;   /* hide vertical scroll */
+  overflow-x: auto;     
+  overflow-y: hidden;   
   scrollbar-width: thin;
 }
 
@@ -184,8 +185,6 @@ h2 {
 }
 
 /* ---------- Preview Box ---------- */
-
-/* stacked images */
 .preview-box {
   position: absolute;
   width: 150px;
@@ -197,13 +196,11 @@ h2 {
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* normal stacked images */
 .preview-box:not(.active) {
   transform: translate(var(--x,0), var(--y,0)) scale(1);
   z-index: var(--i);
 }
 
-/* clicked image expands inside preview area */
 .preview-box.active {
   width: calc(100% - 20px);
   height: calc(100% - 20px);
@@ -212,14 +209,12 @@ h2 {
   box-shadow: 0 15px 40px rgba(0,0,0,0.4);
 }
 
-/* PREVIEW BOX HOVER ROTATION */
 .preview-box:not(.active):hover {
   transform: translate(var(--x,0), var(--y,0)) rotateY(12deg) rotateX(6deg) scale(1.03);
   transition: transform 0.35s ease;
 }
 
 /* ---------- Preview Image---------*/
-
 .preview-box img {
   width: 100%;
   height: 100%;
@@ -229,16 +224,14 @@ h2 {
   transition: transform 0.5s ease, box-shadow 0.4s ease;
 }
 
-/* IMAGE HOVER  */
 .preview-box:not(.active):hover img {
   transform: scale(1.07);
   box-shadow: 0 12px 28px rgba(0,0,0,0.25);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-/* ---------- ACTIVE IMAGE ---------- */
 .preview-box.active img {
-  transform: scale(1) rotate(0deg); /* click-to-center ke liye JS control karega */
+  transform: scale(1) rotate(0deg);
   box-shadow: 0 15px 40px rgba(0,0,0,0.4);
 }
 
@@ -261,7 +254,6 @@ h2 {
   opacity: 0;
 }
 
-/* Show remove button on hover */
 .preview-box:hover .remove-btn {
   opacity: 1;
   transform: scale(1.1);
@@ -287,180 +279,155 @@ h2 {
   animation: fadeDown 0.8s ease forwards;
 }
 
-
-
 /* ---------- ANIMATIONS ---------- */
-@keyframes float { 0%{transform:translateY(0px);} 50%{transform:translateY(-10px);} 100%{transform:translateY(0px);} }
-@keyframes fadeDown { from { opacity: 0; transform: translateY(-25px);} to {opacity:1; transform: translateY(0);} }
+@keyframes float {
+   0%{transform:translateY(0px);} 
+   50%{transform:translateY(-10px);}
+  100%{transform:translateY(0px);} 
+}
+@keyframes fadeDown { 
+  from { opacity: 0; transform: translateY(-25px);} 
+  to {opacity:1; transform: translateY(0);} 
+}
 
 /* ----------------------------------------------------
    RESPONSIVE FIX — FULLY ADAPTIVE PREVIEW AREA & CARDS
 ----------------------------------------------------- */
-
-/* Large Tablets (max-width: 992px) */
 @media (max-width: 992px) {
-  #previewArea {
-    width: 90%;
-    height: 180px;
-    padding: 12px;
+  #previewArea { 
+    width: 90%; 
+    height: 180px; 
+    padding: 12px; 
   }
-
-  .preview-box {
-    width: 130px;
-    height: 160px;
+  .preview-box { 
+    width: 130px; 
+    height: 160px; 
   }
- 
-  #progressContainer {
-    width: 85%;
-    height: 24px;
+  #progressContainer { 
+    width: 85%; 
+    height: 24px; 
+  }
 }
 
-}
-
-/* Tablets / Landscape Phones (max-width: 768px) */
 @media (max-width: 768px) {
-  #dropArea {
-    width: 90%;
-    height: 220px;
+  #dropArea { 
+    width: 90%; 
+    height: 220px; 
   }
-
-  #previewArea {
-    width: 95%;
-    height: 170px;
-    padding: 10px;
+  #previewArea { 
+    width: 95%; 
+    height: 170px; 
+    padding: 10px; 
   }
-
-  .preview-box {
+  .preview-box { 
     width: 120px;
     height: 150px;
   }
-
-  h2 {
-    margin-left: 10px;
-    font-size: 28px;
+  h2 { 
+    margin-left: 10px; 
+    font-size: 28px; 
   }
-  
-  #progressContainer {
-    width: 90%;
-    height: 22px;
+  #progressContainer { 
+    width: 90%; 
+    height: 22px; 
   }
 }
 
-/* Mobile Phones (max-width: 600px) */
 @media (max-width: 600px) {
-  #previewArea {
-    width: 90%;
-    height: 160px;
-    padding: 8px;
-    border-radius: 16px;
+  #previewArea { 
+    width: 90%; 
+    height: 160px; 
+    padding: 8px; 
+    border-radius: 16px; 
   }
-
-  .preview-box {
-    width: 100px;
-    height: 155px;
+  .preview-box { 
+    width: 100px; 
+    height: 155px; 
   }
-
-  .preview-box.active {
+  .preview-box.active { 
     width: calc(100% - 12px);
     height: calc(100% - 12px);
   }
-
-  #dropArea {
-    width: 50%;
+  #dropArea { 
+    width: 50%; 
     height: 200px;
   }
-
   h2 {
-    font-size: 24px;
+    font-size: 24px; 
   }
-
-  #fileInput {
-    width: 170px;
-    height: 15px;
-    font-size: 10px;
+  #fileInput { 
+    width: 170px; 
+    height: 15px; 
+    font-size: 10px; 
   }
-  #progressContainer {
-    width: 92%;
-    height: 20px;
+  #progressContainer { 
+    width: 92%; 
+    height: 20px; 
   }
-  #progressBar {
+  #progressBar { 
     font-size: 12px;
   }
-
 }
 
-/* Small Phones (max-width: 450px) */
 @media (max-width: 450px) {
-  #previewArea {
-    width: 98%;
-    height: 150px;
-    padding: 6px;
-  }
-
-  .preview-box {
-    width: 85px;
-    height: 110px;
-  }
-
-  .preview-box.active {
-    width: calc(100% - 10px);
-    height: calc(100% - 10px);
-  }
-
-  #dropArea {
-    width: 95%;
-    height: 180px;
-  }
-
-  #uploadIcon {
-    width: 50px;
-  }
-
-  #dropArea p {
-    font-size: 14px;
-  }
-
-  #fileInput {
-    width: 150px;
-    height: 38px;
-    font-size: 10px;
-  }
-
-  #progressContainer {
-    width: 95%;
-    height: 18px;
-  }
-  #progressBar {
-    font-size: 11px;
-  }
+    #previewArea {
+      width: 98%; 
+      height: 150px; 
+      padding: 6px; 
+    }
+    .preview-box { 
+      width: 85px; 
+      height: 110px; 
+    }
+    .preview-box.active { 
+      width: calc(100% - 10px); 
+      height: calc(100% - 10px); 
+    }
+    #dropArea { 
+      width: 95%; 
+      height: 180px; 
+    }
+    #uploadIcon {
+      width: 50px; 
+    }
+    #dropArea p { 
+      font-size: 14px;
+    }
+    #fileInput { 
+      width: 150px; 
+      height: 38px; 
+      font-size: 10px; 
+    }
+    #progressContainer { 
+      width: 95%; 
+      height: 18px; 
+    }
+    #progressBar {
+      font-size: 11px;
+    }
 }
 
-/* Extra Small Phones (max-width: 360px) */
 @media (max-width: 400px) {
-  
-  .preview-box {
+  .preview-box { 
     width: 120px;
     height: 140px;
   }
-  #previewArea {
+  #previewArea { 
     height: 150px;
-    width: 90%;
+     width: 90%; 
   }
-   #fileInput {
+  #fileInput { 
     width: 160px;
-    height: 20px;
-    font-size: 10px;
+    height: 20px; 
+    font-size: 10px; 
   }
-  #dropArea {
-    width: 90%;
-    height: 180px;
+  #dropArea { 
+    width: 90%; 
+    height: 180px; 
   }
-  #progressContainer {
-    width: 96%;
-    height: 16px;
+  #progressContainer { 
+    width: 96%; 
+    height: 16px; 
   }
-  #progressBar {
-    font-size: 10px;
-  }
+  #progressBar { font-size: 10px; }
 }
-
